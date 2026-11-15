@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#f4f8ff" />
+  <title>Kabarcuaca — Info Cuaca Hari Ini</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root{--ink:#182b49;--muted:#71819b;--blue:#3979ed;--blue2:#6da6ff;--pale:#eaf3ff;--line:#e8eef7;--card:#fff;--bg:#f5f8fd;--shadow:0 12px 35px rgba(45,83,139,.08)}
+    *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:"DM Sans",sans-serif}
+    .shell{max-width:1120px;margin:auto;padding:28px 24px 36px}
+    header{display:flex;align-items:center;justify-content:space-between;gap:18px;margin-bottom:28px}
+    .brand{display:flex;align-items:center;gap:12px;font-family:"Plus Jakarta Sans",sans-serif;font-weight:800;font-size:22px;letter-spacing:-.7px}
+    .logo{width:44px;height:44px;border-radius:15px;background:linear-gradient(145deg,#75b5ff,#3979ed);display:grid;place-items:center;color:#fff;font-size:24px;box-shadow:0 8px 18px #3979ed33}
+    .header-note{font-size:13px;color:var(--muted)}
+    .searchbar{display:flex;gap:9px;align-items:center;background:#fff;border:1px solid var(--line);padding:7px 8px 7px 15px;border-radius:15px;box-shadow:var(--shadow);width:min(460px,100%)}
+    .searchbar input{border:0;outline:0;min-width:0;flex:1;font:inherit;color:var(--ink);background:transparent}
+    button{border:0;cursor:pointer;font:inherit;font-weight:700;transition:.2s}
+    .search-btn,.loc-btn{background:var(--blue);color:#fff;border-radius:11px;padding:11px 16px}.search-btn:hover,.loc-btn:hover{background:#2466db;transform:translateY(-1px)}
+    .loc-btn{background:#edf4ff;color:var(--blue);white-space:nowrap}
+    .hero{display:grid;grid-template-columns:1.35fr .65fr;gap:18px;margin-bottom:18px}
+    .weather-card{background:linear-gradient(120deg,#3979ed 0%,#5799f6 60%,#81b8ff 100%);border-radius:25px;padding:28px 30px;color:#fff;position:relative;overflow:hidden;min-height:280px;box-shadow:0 18px 40px #3979ed28}
+    .weather-card:after{content:"";position:absolute;width:300px;height:300px;border:1px solid #ffffff24;border-radius:50%;right:-95px;top:-110px;box-shadow:0 0 0 35px #ffffff0c,0 0 0 75px #ffffff09}
+    .place{font-size:15px;font-weight:700;opacity:.95}.date{font-size:13px;opacity:.78;margin-top:5px}
+    .current{display:flex;align-items:center;gap:18px;margin-top:25px;position:relative;z-index:1}
+    .big-icon{font-size:76px;line-height:1;filter:drop-shadow(0 7px 8px #164c9c30)}
+    .temp{font-family:"Plus Jakarta Sans",sans-serif;font-size:76px;font-weight:800;letter-spacing:-5px;line-height:1}
+    .unit{font-size:25px;vertical-align:top;letter-spacing:0}
+    .condition{font-size:17px;font-weight:700;margin-top:8px}
+    .feels{font-size:13px;opacity:.82;margin-top:4px}
+    .hero-foot{display:flex;gap:24px;margin-top:26px;font-size:13px;position:relative;z-index:1;flex-wrap:wrap}
+    .hero-foot span{opacity:.9}.hero-foot b{display:block;font-size:15px;margin-top:3px}
+    .side-card{background:#fff;border:1px solid var(--line);border-radius:25px;padding:23px;box-shadow:var(--shadow);display:flex;flex-direction:column;justify-content:space-between}
+    .side-title{font-size:14px;font-weight:800}.side-sub{font-size:12px;color:var(--muted);margin-top:4px}
+    .sun-row{display:flex;align-items:center;justify-content:space-between;margin-top:20px}
+    .sun-item{display:flex;align-items:center;gap:10px}.sun-emoji{font-size:27px}.sun-label{font-size:12px;color:var(--muted)}.sun-time{font-weight:800;font-size:17px;margin-top:3px}
+    .sun-line{height:5px;border-radius:10px;background:linear-gradient(90deg,#ffd36e,#ff9e65);margin:22px 0 10px;position:relative}
+    .sun-line:before{content:"";position:absolute;left:45%;top:-5px;width:15px;height:15px;border-radius:50%;background:#ffb64c;border:3px solid white;box-shadow:0 0 0 1px #ffd18a}
+    .sun-caption{font-size:11px;color:var(--muted);display:flex;justify-content:space-between}
+    .section-head{display:flex;justify-content:space-between;align-items:end;margin:27px 2px 13px}.section-head h2{font:800 18px "Plus Jakarta Sans";margin:0;letter-spacing:-.4px}.section-head p{font-size:12px;color:var(--muted);margin:4px 0 0}
+    .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:13px}
+    .stat{background:#fff;border:1px solid var(--line);border-radius:18px;padding:17px;box-shadow:var(--shadow)}
+    .stat-top{display:flex;align-items:center;justify-content:space-between;color:var(--muted);font-size:12px;font-weight:600}.stat-icon{width:33px;height:33px;border-radius:11px;background:#eff5ff;display:grid;place-items:center;font-size:17px}
+    .stat-value{font:800 23px "Plus Jakarta Sans";margin-top:13px;letter-spacing:-.7px}.stat-note{font-size:11px;color:var(--muted);margin-top:3px}
+    .forecast{display:grid;grid-template-columns:repeat(7,1fr);gap:10px}
+    .day{background:#fff;border:1px solid var(--line);border-radius:17px;text-align:center;padding:15px 8px;box-shadow:var(--shadow)}
+    .day-name{font-size:12px;font-weight:800}.day-icon{font-size:27px;margin:12px 0}.day-desc{font-size:10px;color:var(--muted);min-height:25px}.day-temps{font-size:13px;font-weight:800;margin-top:8px}.day-temps span{color:#9aa8bc;font-weight:600;margin-left:5px}
+    .status{font-size:12px;color:var(--muted);text-align:center;margin-top:24px}.status.error{color:#d34e4e}.spinner{display:inline-block;width:13px;height:13px;border:2px solid #d9e7fb;border-top-color:var(--blue);border-radius:50%;animation:spin .8s linear infinite;vertical-align:-2px;margin-right:7px}@keyframes spin{to{transform:rotate(360deg)}}
+    footer{border-top:1px solid var(--line);margin-top:28px;padding-top:17px;text-align:center;color:#91a0b4;font-size:11px;line-height:1.7}
+    @media(max-width:760px){.shell{padding:20px 15px 28px}header{align-items:flex-start;flex-direction:column}.searchbar{width:100%}.hero{grid-template-columns:1fr}.weather-card{min-height:270px;padding:24px}.side-card{min-height:190px}.stats{grid-template-columns:repeat(2,1fr)}.forecast{grid-template-columns:repeat(4,1fr)}.temp{font-size:67px}.big-icon{font-size:65px}}
+    @media(max-width:390px){.forecast{grid-template-columns:repeat(2,1fr)}.hero-foot{gap:15px}.loc-btn{padding:10px 12px}.brand{font-size:20px}}
+  </style>
+</head>
+<body>
+  <main class="shell">
+    <header>
+      <div>
+        <div class="brand"><div class="logo">☀</div>Kabarcuaca</div>
+        <div class="header-note">Cuaca terkini, biar rencana tetap pasti.</div>
+      </div>
+      <div class="searchbar">
+        <span aria-hidden="true">⌕</span>
+        <input id="cityInput" type="search" placeholder="Cari kota, misalnya Bandung..." aria-label="Cari kota" />
+        <button class="search-btn" id="searchBtn">Cari</button>
+        <button class="loc-btn" id="locBtn" title="Gunakan lokasi saya">◎</button>
+      </div>
+    </header>
+
+    <section class="hero">
+      <div class="weather-card">
+        <div class="place" id="place">Jakarta, Indonesia</div>
+        <div class="date" id="dateText">Memuat tanggal...</div>
+        <div class="current">
+          <div class="big-icon" id="mainIcon">🌤️</div>
+          <div><div class="temp"><span id="temperature">--</span><span class="unit">°</span></div><div class="condition" id="condition">Memuat cuaca...</div><div class="feels">Terasa seperti <b id="feels">--°C</b></div></div>
+        </div>
+        <div class="hero-foot">
+          <span>🌡️ Suhu maks/min<b id="minmax">--° / --°</b></span>
+          <span>🌧️ Peluang hujan<b id="rainChance">--%</b></span>
+          <span>🕒 Diperbarui<b id="updated">--:--</b></span>
+        </div>
+      </div>
+      <aside class="side-card">
+        <div><div class="side-title">Matahari hari ini</div><div class="side-sub">Waktu lokal di lokasi pilihan</div></div>
+        <div class="sun-row">
+          <div class="sun-item"><span class="sun-emoji">🌅</span><div><div class="sun-label">Terbit</div><div class="sun-time" id="sunrise">--:--</div></div></div>
+          <div class="sun-item"><span class="sun-emoji">🌇</span><div><div class="sun-label">Terbenam</div><div class="sun-time" id="sunset">--:--</div></div></div>
+        </div>
+        <div><div class="sun-line"></div><div class="sun-caption"><span>Pagi</span><span>Siang</span><span>Sore</span><span>Malam</span></div></div>
+      </aside>
+    </section>
+
+    <div class="section-head"><div><h2>Kondisi sekarang</h2><p>Detail cuaca di lokasi pilihanmu</p></div></div>
+    <section class="stats">
+      <article class="stat"><div class="stat-top">Kelembapan <span class="stat-icon">💧</span></div><div class="stat-value" id="humidity">--%</div><div class="stat-note">Kadar uap air di udara</div></article>
+      <article class="stat"><div class="stat-top">Kecepatan angin <span class="stat-icon">💨</span></div><div class="stat-value" id="wind">-- km/j</div><div class="stat-note" id="windDirection">Arah angin --</div></article>
+      <article class="stat"><div class="stat-top">Tekanan udara <span class="stat-icon">◉</span></div><div class="stat-value" id="pressure">-- hPa</div><div class="stat-note">Tekanan permukaan laut</div></article>
+      <article class="stat"><div class="stat-top">Tutupan awan <span class="stat-icon">☁️</span></div><div class="stat-value" id="cloud">--%</div><div class="stat-note">Persentase langit tertutup awan</div></article>
+    </section>
+
+    <div class="section-head"><div><h2>Prakiraan 7 hari</h2><p>Gambaran cuaca beberapa hari ke depan</p></div></div>
+    <section class="forecast" id="forecast">
+      <div class="day">Memuat prakiraan...</div>
+    </section>
+    <div class="status" id="status"><span class="spinner"></span>Mengambil data cuaca terbaru...</div>
+    <footer>Data prakiraan dari <a href="https://open-meteo.com/" target="_blank" rel="noreferrer">Open-Meteo</a> · Untuk informasi dan perencanaan umum. Kondisi aktual dapat berubah.</footer>
+  </main>
+
+<script>
+const $ = id => document.getElementById(id);
+const weatherMap = {
+  0:["Cerah","☀️"],1:["Cerah berawan","🌤️"],2:["Berawan sebagian","⛅"],3:["Mendung","☁️"],
+  45:["Berkabut","🌫️"],48:["Kabut tebal","🌫️"],51:["Gerimis ringan","🌦️"],53:["Gerimis","🌦️"],55:["Gerimis lebat","🌧️"],
+  56:["Gerimis beku ringan","🌧️"],57:["Gerimis beku lebat","🌧️"],61:["Hujan ringan","🌦️"],63:["Hujan sedang","🌧️"],65:["Hujan lebat","🌧️"],
+  66:["Hujan beku ringan","🌧️"],67:["Hujan beku lebat","🌧️"],71:["Salju ringan","🌨️"],73:["Salju sedang","🌨️"],75:["Salju lebat","❄️"],
+  77:["Butiran salju","🌨️"],80:["Hujan lokal","🌦️"],81:["Hujan lokal sedang","🌧️"],82:["Hujan lokal lebat","⛈️"],
+  85:["Hujan salju ringan","🌨️"],86:["Hujan salju lebat","❄️"],95:["Badai petir","⛈️"],96:["Badai petir + hujan es","⛈️"],99:["Badai petir kuat","⛈️"]
+};
+function describe(code){return weatherMap[code] || ["Kondisi tidak diketahui","🌤️"]}
+function setStatus(message,error=false){$("status").textContent=message;$("status").className="status"+(error?" error":"")}
+function formatTime(value){return value ? value.slice(11,16) : "--:--"}
+function dayName(date,index){if(index===0)return "Hari ini";return new Date(date+"T12:00:00").toLocaleDateString("id-ID",{weekday:"short"})}
+function direction(deg){const dirs=["Utara","Timur Laut","Timur","Tenggara","Selatan","Barat Daya","Barat","Barat Laut"];return dirs[Math.round(deg/45)%8]}
+async function getWeather(lat,lon,locationName){
+  setStatus("Mengambil data cuaca terbaru...");
+  const params=new URLSearchParams({
+    latitude:lat,longitude:lon,
+    current:"temperature_2m,relative_humidity_2m,apparent_temperature,is_day,precipitation,weather_code,cloud_cover,pressure_msl,wind_speed_10m,wind_direction_10m",
+    daily:"weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max,sunrise,sunset",
+    forecast_days:"7",timezone:"auto"
+  });
+  try{
+    const response=await fetch("https://api.open-meteo.com/v1/forecast?"+params);
+    if(!response.ok)throw new Error("Layanan cuaca sedang tidak merespons.");
+    const data=await response.json(), c=data.current,d=data.daily;
+    const [desc,icon]=describe(c.weather_code);
+    $("place").textContent=locationName;
+    $("dateText").textContent=new Date(c.time).toLocaleDateString("id-ID",{weekday:"long",day:"numeric",month:"long",year:"numeric"});
+    $("mainIcon").textContent=icon;$("temperature").textContent=Math.round(c.temperature_2m);
+    $("condition").textContent=desc;$("feels").textContent=Math.round(c.apparent_temperature)+"°C";
+    $("minmax").textContent=Math.round(d.temperature_2m_min[0])+"° / "+Math.round(d.temperature_2m_max[0])+"°";
+    $("rainChance").textContent=(d.precipitation_probability_max?.[0] ?? 0)+"%";
+    $("updated").textContent=formatTime(c.time);
+    $("humidity").textContent=c.relative_humidity_2m+"%";
+    $("wind").textContent=Math.round(c.wind_speed_10m)+" km/j";
+    $("windDirection").textContent="Arah "+direction(c.wind_direction_10m);
+    $("pressure").textContent=Math.round(c.pressure_msl)+" hPa";
+    $("cloud").textContent=c.cloud_cover+"%";
+    $("sunrise").textContent=formatTime(d.sunrise[0]);$("sunset").textContent=formatTime(d.sunset[0]);
+    $("forecast").innerHTML=d.time.map((date,i)=>{
+      const [label,emoji]=describe(d.weather_code[i]);
+      return `<article class="day"><div class="day-name">${dayName(date,i)}</div><div class="day-icon">${emoji}</div><div class="day-desc">${label}</div><div class="day-temps">${Math.round(d.temperature_2m_max[i])}° <span>${Math.round(d.temperature_2m_min[i])}°</span></div></article>`;
+    }).join("");
+    setStatus("Data berhasil diperbarui · Waktu lokal "+formatTime(c.time));
+  }catch(err){setStatus(err.message+" Coba beberapa saat lagi.",true)}
+}
+async function searchCity(){
+  const query=$("cityInput").value.trim();if(!query){$("cityInput").focus();return}
+  setStatus("Mencari lokasi...");
+  try{
+    const url="https://geocoding-api.open-meteo.com/v1/search?name="+encodeURIComponent(query)+"&count=1&language=id&format=json";
+    const res=await fetch(url);if(!res.ok)throw new Error("Pencarian lokasi gagal.");
+    const result=await res.json();if(!result.results?.length)throw new Error("Kota tidak ditemukan. Coba nama kota lain.");
+    const p=result.results[0],name=[p.name,p.admin1,p.country].filter(Boolean).join(", ");
+    await getWeather(p.latitude,p.longitude,name);
+  }catch(e){setStatus(e.message,true)}
+}
+$("searchBtn").addEventListener("click",searchCity);
+$("cityInput").addEventListener("keydown",e=>{if(e.key==="Enter")searchCity()});
+$("locBtn").addEventListener("click",()=>{
+  if(!navigator.geolocation){setStatus("Browser tidak mendukung deteksi lokasi.",true);return}
+  setStatus("Meminta izin lokasi...");
+  navigator.geolocation.getCurrentPosition(async pos=>{
+    const {latitude,longitude}=pos.coords;
+    let name="Lokasi saya";
+    try{const r=await fetch(`https://geocoding-api.open-meteo.com/v1/reverse?latitude=${latitude}&longitude=${longitude}&language=id&format=json`);const j=await r.json();if(j.results?.[0])name=[j.results[0].name,j.results[0].admin1,j.results[0].country].filter(Boolean).join(", ")}catch{}
+    getWeather(latitude,longitude,name);
+  },()=>setStatus("Izin lokasi ditolak atau lokasi tidak tersedia. Cari nama kota secara manual.",true),{enableHighAccuracy:false,timeout:10000});
+});
+getWeather(-6.2088,106.8456,"Jakarta, Indonesia");
+</script>
+</body>
+</html>
